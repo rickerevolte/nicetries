@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 26px;
+        }
+
+        #h1 {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 26px;
+            font-size: 50px;
+            margin-left: 50px;
+        }
+
+        #wrapper {
+            background-color: deepskyblue;
+            border: solid black 2px;
+            width: 95vw;
+            height: 95vh;
+        }
+
+        #header {
+            padding: 10px;
+        }
+
+        #resultBox {
+            position: relative;
+            top: 0;
+            left: 10px;
+            border: solid 2px black;
+            padding-right: 10px;
+            background-color: azure;
+            width: 510px;
+            height: 400px;
+            /* float: left; */
+            z-index: 1000;
+        }
+
+        #detailsBox {
+            position: relative;
+            top: -404px;
+            left: 544px;
+            border: solid 2px black;
+            margin-left: 0px;
+            background-color: azure;
+            width: 400px;
+            height: 400px;
+            /* float: left; */
+            z-index: 1000;
+        }
+
+        #buttonBox {
+            display: block;
+            position: relative;
+
+            top: -400px;
+            left: 10px;
+            /* float: left; */
+            width: 400px;
+            height: 100px;
+            /* background-color: darkorange; */
+            z-index: 3000;
+        }
+
+        #quoteBox {
+            display: block;
+            position: relative;
+
+            top: -500px;
+            left: 534px;
+            /* float: left; */
+            width: 400px;
+            height: 100px;
+            /* background-color: darkorange; */
+            z-index: 3000;
+        }
+
+
+        .clear {
+            clear: both;
+        }
+
+        .button0 {
+            float: left;
+            position: relative;
+            top: 0px;
+            height: 24px;
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+        }
+
+        .button1 {
+            float: right;
+            display: block;
+            position: relative;
+            top: 0px;
+            height: 24px;
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+        }
+
+        .button0:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .button1:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Whomever it may concern</h1>
+        </div>
+        <div id="resultBox"></div>
+        <div id="detailsBox"></div>
+        <div id="buttonBox">
+            <button id="fetchButton" class="button0">Fetch Data</button>
+            <button id="getQuoteButton" class="button0">Get a random Kanye West quote</button>
+        </div>
+        <div id="quoteBox">
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <script>
+        async function fetchUserData() {
+            const url = "https://jsonplaceholder.typicode.com/users";
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.log("ERROR!");
+                console.log(error);
+            }
+        }
+        async function getQuote() {
+            const url = "https://api.kanye.rest/";
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.log("ERROR!");
+                console.log(error);
+            }
+        }
+
+        function fillBox(userData) {
+            peopleArray = userData;
+            let list = "<ul>";
+
+            for (let i = 0; i < userData.length; i++) {
+                list += `<li>${userData[i].name} (${userData[i].username}) <button class ="button1" data-position="${i}">details</button></li>`;
+            }
+            list += "</ul>";
+
+            resultBox.innerHTML = list;
+            // console.log(`peopleArray: `);
+            // console.log(peopleArray);
+        }
+
+        function fillQuoteBox(quoteOfTheDay) {
+
+            let superQuote = "<b><em>";
+            // console.log("Klick");
+            superQuote += `"${quoteOfTheDay.quote}"`;
+
+            quoteBox.innerHTML = superQuote;
+            getQuoteButton.style.display = "none";
+        }
+
+        function showDetails(people) {
+            detailsBox.innerHtml += people[i].adress;
+        }
+
+        let peopleArray = [];
+        const fetchButton = document.querySelector("#fetchButton");
+        const resultBox = document.querySelector("#resultBox");
+        const detailsBox = document.querySelector("#detailsBox");
+        const getQuoteButton = document.querySelector("#getQuoteButton");
+        const quoteBox = document.querySelector("#quoteBox");
+
+        fetchButton.addEventListener("click", async function () {
+            resultBox.innerHTML = "Loading...";
+
+            const result = await fetchUserData();
+            console.log(result);
+            fillBox(result);
+        });
+
+        resultBox.addEventListener("click", function (event) {
+            if (event.target.tagName !== "BUTTON") {
+                console.log("Not a button, try again");
+                return;
+            }
+
+            quoteBox.style.display = "block";
+            quoteBox.innerHTML = "";
+
+            let address = "<ul>";
+            let name = peopleArray[Number(event.target.dataset.position)].name;
+            let street = peopleArray[Number(event.target.dataset.position)].address.street;
+            let suite = peopleArray[Number(event.target.dataset.position)].address.suite;
+            let city = peopleArray[Number(event.target.dataset.position)].address.city;
+            let zipCode = peopleArray[Number(event.target.dataset.position)].address.zipcode;
+
+            address += `<li>Name: ${name}</li><br>Street: ${street}<br>Suite: ${suite}<br>City: ${city}<br>Zipcode: ${zipCode}`;
+            address += "</ul>";
+
+            getQuoteButton.style.display = "block";
+
+            // console.log(event.target.dataset.position);
+            // console.log(peopleArray[Number(event.target.dataset.position)].address);
+
+            // detailsBox.innerHTML = peopleArray[Number(event.target.dataset.position)].address.street;
+            detailsBox.innerHTML = address;
+        })
+
+        getQuoteButton.addEventListener("click", async function () {
+            quoteBox.innerHTML = "Loading...";
+
+            const result = await getQuote();
+            fillQuoteBox(result);
+        });
+
+
+    </script>
+
+</body>
+
+</html>

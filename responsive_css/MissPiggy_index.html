@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flexinflex</title>
+    <style>
+    
+    body {
+        margin: 0;
+        background-color: rgb(252, 180, 213);
+        font-family: monospace;    
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        color: rgb(248, 61, 145);
+        margin: 0 0 1rem 0;
+    }
+    
+    h1 {        
+        font-size: 60px;
+    }
+
+    p {
+        font-size: 20px;
+    }
+    
+    header {
+        background-color: rgb(253, 119, 179);    
+        padding: 0 0 0 0;
+        height: 60px;
+        position: relative;
+        z-index: 10000;
+    }
+    
+    header > h2 {
+        color: #ebebeb;
+        
+        float: left;
+        line-height: 60px;
+        margin: 0 0 0 30px;
+    }
+
+    header > a {
+        float: right;
+        padding-right: 20px;
+        font-size: 40px;
+        font-weight: bold;
+        text-decoration: none;
+        line-height: 60px;
+        color: #ebebeb;
+        
+    }
+    
+    h5 {
+        color: #ebebeb;
+        font-size: 25px;
+        float: left;
+        line-height: 60px;
+        margin: -10px 0 0 30px;
+    }
+    
+    h6 {
+        color: #ebebeb;
+        font-size: 20px;
+        float: left;
+        line-height: 60px;
+        margin: -10px 0 0 30px;
+    }
+    
+    header img {
+        float: right;
+        width: 50px;
+        height: 50px;
+    }
+
+    #div1 {
+            position: fixed;
+            right: 20px;
+            background-image: url("images/burger01.png");
+            background-repeat: no-repeat;
+            background-position: top;
+            background-size:cover;
+           
+            width: 75px;
+            height: 162px;
+            overflow: visible;
+            z-index: 20000;            
+            transition: 500ms;
+        }
+
+        #div1:hover {
+            position: fixed;
+            background-image: url("images/burger02.png");
+            background-repeat: no-repeat;
+            background-position: top;
+            background-size: cover;
+            float: right;
+            width: 75px;
+            height: 162px;
+            overflow: visible;
+            z-index: 100;
+        }    
+        
+    .wrapContainer {    
+        position: relative;     
+        top: 20px;   
+        display: flex;
+        margin: 0 0 0 0;
+        width: 100vw;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        z-index: 1000;
+    }
+
+    .wrapContainer > div {
+        width: 90vw;
+    }
+
+    .flexContent {
+        width: 100%;
+        max-width: 1000px;
+        
+        position: relative;
+        left: 30px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: start;
+        align-items: flex-start;
+        gap: 10px;
+    }
+        
+    .flexContent > div {
+        
+        width: 40%;        
+        min-width: 380px;
+        max-width: 430px;
+        padding: 0 5px 0 5px;
+    }
+
+    .flexContent > div:nth-child(3) {
+               
+        min-width: 120px;
+        max-width: 120px;
+        height: 200px;
+        background-color:rgb(248, 61, 145);
+        border: none;
+    }
+
+    .flexContent > div:nth-child(4) {
+        
+        border: none;
+        gap: 0;
+    }
+
+    .flexContent > div:nth-child(5) {       
+        
+        border: none;
+        gap: 0;
+    }
+
+        /* sideMenu*/
+    #sideMenu {
+        right: -200px;
+        top: 60px;
+        position: fixed;
+        z-index: 2000;      
+        width: 200px;
+        height: calc(100vh - 60px);
+        background-color: rgb(183, 173, 230);
+        box-shadow: 10px 10px grey;
+        filter: blur(0px);
+        opacity: 75%;
+        transition: 400ms;
+    }
+
+    #sideMenu.sideMenuVisible {
+        right: 0;
+    }
+
+    #sideMenu a {
+        
+        color: rgb(248, 61, 145);
+        text-decoration: none;
+        filter: blur(0px)
+    }
+
+    #sideMenu ul {
+        
+        color: rgb(248, 61, 145);
+        filter: blur(0px)
+    }
+
+    #sideMenu li {
+        
+        color: rgb(248, 61, 145);
+        filter: blur(0px)
+    }
+
+    .topMenu {
+        display: none;
+        float: right;
+        padding-right: 20px;
+    }
+
+    .topMenu li {
+        display: inline;
+
+    }
+
+    .topMenu ul {
+        color: #ebebeb;
+            
+    }
+    .topMenu a {
+        font-size: 15px;
+        color: #ebebeb;
+        text-decoration: none;
+    }
+
+    /*TABLET AND UP*/
+    @media (min-width:601px) {
+        .topMenu {
+            display: block;
+        }
+
+        header > a {
+            display: none;
+        }
+
+        #sideMenu {
+            display: none;
+        }
+    }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Piggy:Me</h2>
+        <nav class="topMenu">
+            <ul>
+                <li><a href="#">home</a></li>
+                <li><a href="#">about</a></li>
+                <li><a href="#">works</a></li>
+                <li><a href="#">contact</a></li>
+            </ul>
+        </nav>        
+        <a href="#" class="img" id="burgerButton">
+            <div id="div1"></div></a>
+       <!--
+        <a href ="#" id="burgerButton">=</a>
+        -->
+    </header>  
+    <div id="sideMenu" class="">        
+        <ul>
+            <li><a href="#">home</a></li>
+            <li><a href="#">about</a></li>
+            <li><a href="#">works</a></li>
+            <li><a href="#">contact</a></li>
+        </ul>        
+    </div>    
+    <script>
+        const burgerButton = document.getElementById("burgerButton");
+        const sideMenu = document.getElementById("sideMenu");
+        burgerButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            sideMenu.classList.toggle("sideMenuVisible");
+        });
+    </script>
+
+    <div class="wrapContainer">
+        <div class="flexContent">
+            <div><h1>about</h1>
+                <h2>I am Miss Piggy</h2>
+                <h2>I am a Muppet character</h2> 
+                <h2>I am known for my breakout role in Jim Henson's The Muppet Show</h2>
+                <img src="images/missPiggy_2.jpg" alt="Missing: Miss Piggy" style="width:100%;" float="left">
+            </div>
+            <div>
+                <p>Since my debut in 1976, I have been notable for my temperamental diva superstar personality, 
+                    tendency to use French phrases in my speech, and practice of karate. 
+                    I am also known for my on-again/off-again relationship with Kermit the Frog, which began in 1976 and ended in 2015. 
+                </p>
+                <p>I began as a minor chorus pig on The Muppet Show, but gradually developed into one of the central characters of the series, 
+                    as the writers and producers of The Muppet Show recognized that a lovelorn pig could be more than a one-note running gag. 
+                    I spawned a huge fad during the late 1970s and early 1980s and eclipsed Kermit and the other Muppets in popularity at that time, 
+                    selling far more merchandise and writing a book entitled Miss Piggy's Guide to Life that, 
+                    unlike any of Kermit's books, wound up on top of the New York Times Bestseller List.
+                </p>
+            </div>
+            
+            <div>
+                <h5>BUY!<br><br></h5>
+                <h6>Merch</h6>
+                <h6>Tickets</h6>
+            </div>
+            <div>
+                <h2>Need a pig?</h2>
+            </div>
+            <div>
+                <h2>Contact me!</h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

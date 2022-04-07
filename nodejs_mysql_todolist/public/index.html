@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>To Do</title>
+        <style>
+            body {
+                background-color: rgb(252, 253, 191);
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                color: rgb(44, 44, 44);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>My list of things to do</h1>
+        <ul id="list"></ul>
+        <button id = "add">Add</button>
+        
+        <script>
+            const listElement = document.getElementById("list");
+            const addButton = document.getElementById("add");
+
+            addButton.addEventListener("click", () => {
+                const data = prompt(`enter to do do`); // ask user to insert data
+                const dataToSend = { content: data }; // content is the column name in our table!
+                fetch("/database", {
+                    method: "POST",
+                    headers:  { "Content-Type": "application/json" },
+                    body: JSON.stringify(dataToSend)
+                })
+                // use .then() because we are not in a function an therefore cannot use async / await
+                .then((res) => res.json())
+                .then((res) => location.reload()); // reload page after adding
+            });
+            
+            fetch("/database")
+            
+                .then((res) => res.json())
+                .then((res) => {
+                    console.log("fetching database"); // fetch starts on page load
+                    for (let i=0; i< res.result.length; i++) {
+                        const listItems = document.createElement("li");
+                        listItems.dataId = res.result[i].id;
+                        listItems.innerHTML = `no ${listItems.dataId}: ${res.result[i].content}`;
+                        // create delete button
+                        const deleteButton = document.createElement("button");
+                        deleteButton.dataId = res.result[i].id;
+                        deleteButton.innerHTML="delete";
+
+                        deleteButton.onclick = function() {
+                            const Id = deleteButton.dataId;
+                            confirm(`Are you sure to delete list-item no ${Id}?`);
+                            deleteItem(Id);
+                        }
+
+                        listItems.addEventListener("click", async (event) => {
+                            console.log(event);
+                            console.log(`data Id of element is: ${listItems.dataId}`);
+                            const result = await fetch(`/database/${event.srcElement.dataId}`);
+                            const data = await result.json();
+
+                            event.srcElement.innerHTML = `<span style="color:blue">no ${data.id}: ${data.content}</span>`;
+                        });
+                        listElement.append(listItems);
+                        listElement.append(deleteButton);
+                    }
+                });
+            
+            // delete entry from database
+            async function deleteItem(Id) {
+                console.log("delete async function says hello");
+                // the file name we want to delete - put into a json, so that we can send it to the server
+                const itemToDelete = { id: Id }; //Ich kriege den Wert Id nicht gepassed
+                console.log(itemToDelete);
+                // make a DELETE request to the server to delete the item with id=Id (D of CRUD)
+                const result = await fetch(`database`, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(itemToDelete)
+                });
+                console.log("after req Server");
+                // get the answer of the server as JSON
+                const data = await result.json();
+                // and display the result
+                console.log("This is server app.js response")
+                console.log(data);
+                // location.reload();
+            };
+            
+        </script>
+    </body>
+</html>
